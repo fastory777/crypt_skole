@@ -15,17 +15,25 @@ db.serialize(() => {
     `);
 
 });
-
 function run(sql, params = []) {
     return new Promise((resolve, reject) => {
         db.run(sql, params, function (err) {
             if (err) reject(err);
             else resolve({
-                changes: this.changes, // antall rader som ble endret
-                lastID: this.lastID // ID for siste innsetting (hvis INSERT)
+                changes: this.changes,
+                lastID: this.lastID
             });
         });
     });
 }
 
-module.exports = { run };
+function get(sql, params = []) {
+    return new Promise((resolve, reject) => {
+        db.get(sql, params, (err, row) => {
+            if (err) return reject(err);
+            resolve(row);
+        });
+    });
+}
+
+module.exports = { run, get };

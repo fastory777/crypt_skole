@@ -1,20 +1,24 @@
 const reg = document.getElementById("register");
+const userNameInput = document.getElementById("userName");
 const passwordInput = document.getElementById("password");
 const registerButton = document.getElementById("registerButton");
+const message = document.getElementById("message");
 
-function updateRegisterButton() {
-    registerButton.disabled = passwordInput.value.length < 4;
-}
+passwordInput.addEventListener("input", function () {
+    if (passwordInput.value.length >= 4) {
+        registerButton.disabled = false;
+        message.textContent = "";
+        return;
+    }
 
-updateRegisterButton();
-passwordInput.addEventListener("input", updateRegisterButton);
+    registerButton.disabled = true;
+    message.textContent = "Password must be at least 4 characters.";
+});
 
 reg.addEventListener("submit", async function (e) {
     e.preventDefault();
-
-    const un = document.getElementById("userName").value;
+    const un = userNameInput.value;
     const p = passwordInput.value;
-
     const res = await fetch("/api/register", {
         method: "POST",
         headers: {
@@ -25,7 +29,15 @@ reg.addEventListener("submit", async function (e) {
             password: p
         })
     });
-
     const data = await res.json();
     console.log(data);
+
+    if (res.ok && data.result) {
+        message.textContent = `User ${un} is registered with id ${data.result.lastID}.`;
+        reg.reset();
+        registerButton.disabled = true;
+        return;
+    }
+
+    message.textContent = data.message || "Registration failed.";
 });

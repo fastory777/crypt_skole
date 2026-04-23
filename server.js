@@ -1,5 +1,4 @@
 const express = require("express");
-const crypto = require("crypto");
 const app = express();
 const port = 3000;
 
@@ -9,7 +8,10 @@ app.use(express.json());
 require("./private/db.pri.js");
 
 const { block } = require("./private/block.pri");
-const { run: dbRun } = require('./private/db.pri');
+const { run: dbRun } = require("./private/db.pri.js");
+const { register } = require("./private/register.pri.js");
+const { login } = require("./private/login.pri.js");
+
 
 app.post("/api/block", (req, res) => {
     const verdi = req.body.value;
@@ -22,52 +24,22 @@ app.post("/api/block", (req, res) => {
 
 app.post("/api/register", async (req, res) => {
     try {
-        const userName = req.body.userName;
-        const password = req.body.password;
-
-        if (!userName || !password) {
-            return res.status(400).json({
-                status: "error",
-                message: "Username og passord må fylles ut"
-            });
-        }
-
-        if (password.length < 4) {
-            return res.status(400).json({
-                status: "error",
-                message: "Passord må være minst 4 tegn"
-            });
-        }
-
-        const encryptedPassword = crypto
-            .createHash("sha256")
-            .update(password)
-            .digest("hex");
-
-        await dbRun(
-            "INSERT INTO user (userName, password) VALUES (?, ?)",
-            [userName, encryptedPassword]
-        );
-
-        console.log(userName, encryptedPassword);
-
-        res.json({
-            status: "ok",
-            encryptedPassword: encryptedPassword
-        });
+        const result = await register(req.body);
+        res.json(result);
     } catch (err) {
-        if (err && err.message && err.message.includes("UNIQUE constraint failed")) {
-            return res.status(409).json({
-                status: "error",
-                message: "Brukernavn finnes fra før"
-            });
-        }
-
         console.error(err);
-        res.status(500).json({
-            status: "error",
-            message: "Noe gikk galt ved registrering"
-        });
+        res.status(500).json({ status: "error", message: err.message });
+    }
+});
+
+app.post("/api/login", async (req, res) => {
+    try {
+        const result = await login(req.body);
+        res.json(result);
+        console.log(result);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ status: "error", message: err.message });
     }
 });
 
