@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset password</title>
+    <style>
+        .session {
+            width: auto;
+            float: right;
+        }
+    </style>
+</head>
+<body>
+<p id="session" class="session"></p>
+<h1>Reset password</h1>
+<form id="reset">
+    <input type="password" id="oldPassword" placeholder="Old password"><br />
+    <input type="password" id="newPassword" placeholder="New password"><br />
+    <input type="password" id="confirmPassword" placeholder="Confirm password"><br />
+    <button type="submit" id="resetButton">Reset password</button>
+</form>
+<p id="message"></p>
+
+<script src="include/session.pub.js" defer></script>
+<script src="include/reset.pub.js" defer></script>
+</body>
+</html>

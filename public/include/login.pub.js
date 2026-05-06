@@ -17,6 +17,7 @@ login.addEventListener("submit", async function (e) {
     });
     const data = await res.json();
     console.log(data);
-//    const resultText = "Bruker " + un + " (id:" + data.result.userID + ") ble logget inn.";
-//    result.innerHTML = resultText;
+
+    result.innerHTML = data.message || "Login failed.";
+    checkSession();
 });

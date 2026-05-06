@@ -1,9 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
+    <style>
+        .session {
+            width: auto;
+            float: right;
+        }
+    </style>
 </head>
 <body>
+<p id="session" class="session"></p>
 <h1>Register</h1>
 <form id="register">
     <input type="text" id="userName" placeholder="Username"><br />
@@ -12,8 +21,7 @@
 </form>
 <p id="message"></p>
 
-<a href="index.html">Back to front page</a> -- <a href="login.html">Login</a>
-
+<script src="include/session.pub.js" defer></script>
 <script src="include/register.pub.js" defer></script>
 </body>
 </html>

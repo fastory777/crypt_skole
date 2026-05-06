@@ -1,9 +1,9 @@
 const { run: dbRun } = require("./db.pri.js");
-const { block } = require("./block.pri.js");
+const bcrypt = require("bcryptjs");
 
 async function register(body) {
     const { userName, password } = body || {};
-    const encryptedPassword = block(password || "");
+    const encryptedPassword = await bcrypt.hash(password, 10);
     console.log(userName, encryptedPassword);
 
     const sql = "INSERT INTO user (userName, password) VALUES (?, ?);";

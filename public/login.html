@@ -4,8 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <style>
+        .session {
+            width: auto;
+            float: right;
+        }
+    </style>
 </head>
 <body>
+<p id="session" class="session"></p>
 <h1>Login</h1>
 <form id="login">
     <input type="text" id="userName" placeholder="Username"><br />
@@ -14,8 +21,7 @@
 </form>
 <p id="result"></p>
 
-<br /><a href="index.html">Back to front page</a> -- <a href="Register.html">Register</a>
-
+<script src="include/session.pub.js" defer></script>
 <script src="include/login.pub.js" defer></script>
 </body>
 </html>
