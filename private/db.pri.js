@@ -8,10 +8,10 @@ db.serialize(() => {
 
     db.run(`
         CREATE TABLE IF NOT EXISTS user (
-            idUser INTEGER PRIMARY KEY AUTOINCREMENT,
-            userName VARCHAR(45) NOT NULL UNIQUE,
+                                            idUser INTEGER PRIMARY KEY AUTOINCREMENT,
+                                            userName VARCHAR(45) NOT NULL UNIQUE,
             password VARCHAR(45) NOT NULL
-        );
+            );
     `);
 
 });
