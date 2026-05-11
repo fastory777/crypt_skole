@@ -18,6 +18,11 @@ login.addEventListener("submit", async function (e) {
     const data = await res.json();
     console.log(data);
 
-    result.innerHTML = data.message || "Login failed.";
+    if (res.ok && data.status === "success") {
+        result.textContent = `Du ${data.userName} er logget inn med bruker-ID: ${data.idUser}.`;
+    } else {
+        result.textContent = "Login feilet. Prøv igjen.";
+    }
+
     checkSession();
 });

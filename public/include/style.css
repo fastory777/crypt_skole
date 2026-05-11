@@ -1,0 +1,80 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 32px;
+    font-family: Arial, sans-serif;
+    color: #172033;
+    background: #f4f7fb;
+}
+
+h1 {
+    margin-top: 56px;
+    color: #102a43;
+}
+
+form,
+body > input,
+body > p:not(.session) {
+    max-width: 460px;
+}
+
+input {
+    width: 100%;
+    max-width: 460px;
+    margin: 6px 0;
+    padding: 10px 12px;
+    border: 1px solid #b7c5d6;
+    border-radius: 6px;
+    font-size: 1rem;
+    background: white;
+}
+
+button {
+    margin-top: 8px;
+    padding: 10px 16px;
+    border: 0;
+    border-radius: 6px;
+    font-size: 1rem;
+    color: white;
+    background: #2563eb;
+    cursor: pointer;
+}
+
+button:disabled {
+    background: #9aa8ba;
+    cursor: not-allowed;
+}
+
+.session {
+    position: fixed;
+    top: 16px;
+    right: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 10px;
+    max-width: calc(100vw - 48px);
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.session a,
+.session span {
+    padding: 6px 10px;
+    border-radius: 6px;
+    background: white;
+    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.12);
+}
+
+.session a {
+    color: #1d4ed8;
+    text-decoration: none;
+}
+
+.session a:hover {
+    text-decoration: underline;
+}
