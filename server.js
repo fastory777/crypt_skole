@@ -20,6 +20,7 @@ const { block } = require("./private/block.pri");
 const { run: dbRun } = require("./private/db.pri.js");
 const { register } = require("./private/register.pri.js");
 const { login } = require("./private/login.pri.js");
+const { substitution } = require("./private/substitution.pri.js");
 
 
 app.post("/api/block", (req, res) => {
@@ -28,6 +29,14 @@ app.post("/api/block", (req, res) => {
     const blokk = block(verdi);
     res.json({
         blokk: blokk
+    });
+});
+
+app.post("/api/substitution", (req, res) => {
+    const verdi = req.body.value || "";
+    const kryptert = substitution(verdi);
+    res.json({
+        substitution: kryptert
     });
 });
 
