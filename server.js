@@ -2,16 +2,20 @@ const express = require("express");
 const session = require("express-session");
 const app = express();
 const port = 3000;
+const sessionCookieName = "connect.sid";
+const sessionCookieOptions = {
+    maxAge: 1000 * 60 * 30, // 30 minutter
+    path: "/"
+};
 
 app.use(express.static("public"));
 app.use(express.json());
 app.use(session({
+    name: sessionCookieName,
     secret: "hemmelig-nøkkel",
     resave: false,
     saveUninitialized: false,
-    cookie: {
-        maxAge: 1000 * 60 * 30 // 30 minutter
-    }
+    cookie: sessionCookieOptions
 }));
 
 require("./private/db.pri.js");
@@ -81,8 +85,12 @@ app.post("/api/logout", (req, res) => {
             return;
         }
 
-        res.clearCookie("connect.sid");
-        res.json({ status: "success", message: "Logged out" });
+        res.clearCookie(sessionCookieName, { path: sessionCookieOptions.path });
+        res.json({
+            status: "success",
+            message: "Logged out",
+            redirectTo: "/index.html"
+        });
     });
 });
 

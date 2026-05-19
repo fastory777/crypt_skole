@@ -9,14 +9,8 @@ async function checkSession() {
             <a href="index.html">Forside</a>
             <span>${data.userName} (id: ${data.userId}) logget inn</span>
             <a href="reset.html">Bytt passord</a>
-            <a href="#" id="logoutLink">Logg ut</a>
+            <a href="index.html?a=logout">Logg ut</a>
         `;
-
-        document.getElementById("logoutLink").addEventListener("click", async function (e) {
-            e.preventDefault();
-            await fetch("/api/logout", { method: "POST" });
-            window.location.href = "index.html";
-        });
         return;
     }
 
