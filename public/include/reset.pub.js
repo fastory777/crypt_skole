@@ -61,7 +61,7 @@ reset.addEventListener("submit", async function (e) {
         })
     });
     const data = await res.json();
-    console.log(data);
+    // console.log(data);
 
     if (res.ok && data.status === "success") {
         resultReset.innerHTML = "Passordet er byttet.";

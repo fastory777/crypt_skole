@@ -28,7 +28,7 @@ const { substitution } = require("./private/substitution.pri.js");
 
 app.post("/api/block", (req, res) => {
     const verdi = req.body.value;
-    console.log("Mottatt verdi:", verdi);
+    // console.log("Mottatt verdi:", verdi);
     const blokk = block(verdi);
     res.json({
         blokk: blokk
@@ -54,16 +54,16 @@ app.post("/api/register", async (req, res) => {
 });
 
 app.post("/api/login", async (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
     try {
         const result = await login(req.body);
         if (result.status === "success") {
             req.session.userId = result.idUser;
             req.session.userName = result.userName;
-            console.log(req.session);
+            // console.log(req.session);
         }
         res.json(result);
-        console.log(result);
+        // console.log(result);
     } catch (err) {
         console.error(err);
         res.status(500).json({ status: "error", message: err.message });
@@ -119,7 +119,7 @@ async function resetPasswordRoute(req, res) {
             password: oldPassword
         };
         const loginResult = await login(loginPayload);
-        console.log("login-module check (old password):", loginResult);
+        // console.log("login-module check (old password):", loginResult);
 
         if (loginResult.status !== "success") {
             res.status(400).json({ status: "error", message: "Old password is wrong" });
@@ -131,7 +131,7 @@ async function resetPasswordRoute(req, res) {
             password: nextPassword
         };
         const resetResult = await reset(resetPayload);
-        console.log("reset-module:", resetResult);
+        // console.log("reset-module:", resetResult);
 
         res.json({
             status: "success",
@@ -149,5 +149,5 @@ app.post("/api/reset", resetPasswordRoute);
 app.post("/api/reset-password", resetPasswordRoute);
 
 app.listen(port, () => {
-    console.log(`Server running on http://localhost:${port}`);
+    // console.log(`Server running on http://localhost:${port}`);
 });

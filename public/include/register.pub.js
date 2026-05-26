@@ -30,7 +30,7 @@ reg.addEventListener("submit", async function (e) {
         })
     });
     const data = await res.json();
-    console.log(data);
+    // console.log(data);
 
     if (res.ok && data.result) {
         message.textContent = `User ${un} is registered with id ${data.result.lastID}.`;

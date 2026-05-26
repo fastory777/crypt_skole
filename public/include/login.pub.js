@@ -16,7 +16,7 @@ login.addEventListener("submit", async function (e) {
         })
     });
     const data = await res.json();
-    console.log(data);
+    // console.log(data);
 
     if (res.ok && data.status === "success") {
         result.textContent = `Du ${data.userName} er logget inn med bruker-ID: ${data.idUser}.`;
