@@ -1,10 +1,7 @@
-const params = new URLSearchParams(window.location.search);
+const logoutButton = document.getElementById("logoutButton");
+const logoutMessage = document.getElementById("logoutMessage");
 
 async function logout() {
-    if (params.get("a") !== "logout") {
-        return;
-    }
-
     const res = await fetch("/api/logout", {
         method: "POST"
     });
@@ -15,7 +12,7 @@ async function logout() {
         return;
     }
 
-    alert("Logout failed");
+    logoutMessage.textContent = data.message || "Logout failed";
 }
 
-logout();
+logoutButton.addEventListener("click", logout);

@@ -9,7 +9,7 @@ async function checkSession() {
             <a href="index.html">Forside</a>
             <span>${data.userName} (id: ${data.userId}) logget inn</span>
             <a href="reset.html">Bytt passord</a>
-            <a href="index.html?a=logout">Logg ut</a>
+            <a href="logout.html">Logg ut</a>
         `;
         return;
     }

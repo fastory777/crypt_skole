@@ -13,9 +13,10 @@
     <input type="password" id="oldPassword" placeholder="Old password"><br />
     <input type="password" id="newPassword" placeholder="New password"><br />
     <input type="password" id="confirmPassword" placeholder="Confirm password"><br />
-    <button type="submit" id="resetButton">Reset password</button>
+    <span id="errorMessage"></span><br />
+    <button type="submit" id="resetButton" disabled>Reset password</button>
 </form>
-<p id="message"></p>
+<p id="resultReset"></p>
 
 <script src="include/session.pub.js" defer></script>
 <script src="include/reset.pub.js" defer></script>

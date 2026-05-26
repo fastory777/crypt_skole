@@ -21,8 +21,7 @@ app.use(session({
 require("./private/db.pri.js");
 
 const { block } = require("./private/block.pri");
-const { run: dbRun } = require("./private/db.pri.js");
-const { register } = require("./private/register.pri.js");
+const { register, reset } = require("./private/register.pri.js");
 const { login } = require("./private/login.pri.js");
 const { substitution } = require("./private/substitution.pri.js");
 
@@ -94,38 +93,60 @@ app.post("/api/logout", (req, res) => {
     });
 });
 
-app.post("/api/reset-password", async (req, res) => {
-    if (!req.session.userId) {
-        res.status(401).json({ status: "error", message: "You must be logged in" });
-        return;
-    }
-
-    const bcrypt = require("bcryptjs");
-    const { oldPassword, newPassword } = req.body || {};
-
+async function resetPasswordRoute(req, res) {
     try {
-        const user = await require("./private/db.pri.js").get(
-            "SELECT * FROM user WHERE idUser = ?;",
-            [req.session.userId]
-        );
+        const userName = req.session.userName;
+        const { oldPassword, password, newPassword, confirmPassword } = req.body || {};
+        const nextPassword = password || newPassword;
 
-        if (!user || !(await bcrypt.compare(oldPassword, user.password))) {
+        if (!userName) {
+            res.status(401).json({ status: "error", message: "You must be logged in" });
+            return;
+        }
+
+        if (!oldPassword || !nextPassword) {
+            res.status(400).json({ status: "error", message: "Fill in all password fields" });
+            return;
+        }
+
+        if (confirmPassword && nextPassword !== confirmPassword) {
+            res.status(400).json({ status: "error", message: "New passwords do not match" });
+            return;
+        }
+
+        const loginPayload = {
+            userName: userName,
+            password: oldPassword
+        };
+        const loginResult = await login(loginPayload);
+        console.log("login-module check (old password):", loginResult);
+
+        if (loginResult.status !== "success") {
             res.status(400).json({ status: "error", message: "Old password is wrong" });
             return;
         }
 
-        const hashedPassword = await bcrypt.hash(newPassword, 10);
-        await dbRun(
-            "UPDATE user SET password = ? WHERE idUser = ?;",
-            [hashedPassword, req.session.userId]
-        );
+        const resetPayload = {
+            userName: userName,
+            password: nextPassword
+        };
+        const resetResult = await reset(resetPayload);
+        console.log("reset-module:", resetResult);
 
-        res.json({ status: "success", message: "Password updated" });
+        res.json({
+            status: "success",
+            message: "Password updated",
+            userName: userName,
+            reset: resetResult
+        });
     } catch (err) {
         console.error(err);
         res.status(500).json({ status: "error", message: err.message });
     }
-});
+}
+
+app.post("/api/reset", resetPasswordRoute);
+app.post("/api/reset-password", resetPasswordRoute);
 
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);

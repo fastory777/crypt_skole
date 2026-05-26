@@ -14,4 +14,17 @@ async function register(body) {
     return { result };
 }
 
-module.exports = { register };
+async function reset(body) {
+    const { userName, password } = body || {};
+    const encryptedPassword = await bcrypt.hash(password, 10);
+    console.log(userName, encryptedPassword);
+
+    const sql = "UPDATE user SET password = ? WHERE userName = ?;";
+    const params = [encryptedPassword, userName];
+    const result = await dbRun(sql, params);
+
+    console.log(result);
+    return { result };
+}
+
+module.exports = { register, reset };
