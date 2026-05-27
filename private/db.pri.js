@@ -36,4 +36,13 @@ function get(sql, params = []) {
     });
 }
 
-module.exports = { run, get };
+function all(sql, params = []) {
+    return new Promise((resolve, reject) => {
+        db.all(sql, params, (err, rows) => {
+            if (err) reject(err);
+            else resolve(rows);
+        });
+    });
+}
+
+module.exports = { run, get, all };

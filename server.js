@@ -1,7 +1,7 @@
 const express = require("express");
 const session = require("express-session");
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 const sessionCookieName = "connect.sid";
 const sessionCookieOptions = {
     maxAge: 1000 * 60 * 30, // 30 minutter
@@ -148,6 +148,17 @@ async function resetPasswordRoute(req, res) {
 app.post("/api/reset", resetPasswordRoute);
 app.post("/api/reset-password", resetPasswordRoute);
 
-app.listen(port, () => {
-    // console.log(`Server running on http://localhost:${port}`);
+const server = app.listen(port, () => {
+    if (server.address()) {
+        console.info(`Server running on http://localhost:${port}`);
+    }
+});
+
+server.on("error", (err) => {
+    if (err.code === "EADDRINUSE") {
+        console.error(`Port ${port} is already in use. Stop the other server or run with PORT=3001 node server.js`);
+        return;
+    }
+
+    console.error(err.message);
 });

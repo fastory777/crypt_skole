@@ -5,15 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Encrypter</title>
     <link rel="stylesheet" href="include/style.css">
+    <script type="module" src="include/tools.pub.js"></script>
 </head>
 <body>
-<p id="session" class="session"></p>
-<h1>Encrypter</h1>
-<input type="text" id="input" placeholder="Enter your text">
-<p>Block: <span id="block-output"></span></p>
-<p>Substitution: <span id="substitution-output"></span></p>
+    <p id="session" class="session"></p>
+    <script type="module" src="include/session.pub.js" defer></script>
 
-<script src="include/session.pub.js" defer></script>
-<script src="include/block.pub.js" defer></script>
+    <h1>Encrypter</h1>
+    <input type="text" id="input" placeholder="Enter your text">
+    <p>Block: <span id="block-output"></span></p>
+    <p>Substitution: <span id="substitution-output"></span></p>
+
+    <script src="include/block.pub.js" defer></script>
 </body>
 </html>

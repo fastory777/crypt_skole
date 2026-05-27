@@ -1,5 +1,15 @@
 const sessionP = document.getElementById("session");
 
+async function checkAdmin() {
+    const res = await fetch("/api/admin");
+    const data = await res.json();
+    if (data.isAdmin) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 async function checkSession() {
     const res = await fetch("/api/session");
     const data = await res.json();
