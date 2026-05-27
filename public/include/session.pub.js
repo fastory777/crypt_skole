@@ -1,16 +1,7 @@
 const sessionP = document.getElementById("session");
 
-async function checkAdmin() {
-    const res = await fetch("/api/admin");
-    const data = await res.json();
-    if (data.isAdmin) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
 async function checkSession() {
+    const { checkAdmin } = await import("./tools.pub.js");
     const res = await fetch("/api/session");
     const data = await res.json();
 
@@ -21,6 +12,11 @@ async function checkSession() {
             <a href="reset.html">Bytt passord</a>
             <a href="logout.html">Logg ut</a>
         `;
+
+        if (await checkAdmin()) {
+            sessionP.innerHTML += `<br /> Admin: <a href="users.html">Users</a>`;
+        }
+
         return;
     }
 

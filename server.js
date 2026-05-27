@@ -22,7 +22,7 @@ require("./private/db.pri.js");
 
 const { block } = require("./private/block.pri");
 const { register, reset } = require("./private/register.pri.js");
-const { login } = require("./private/login.pri.js");
+const { login, isAdmin } = require("./private/login.pri.js");
 const { substitution } = require("./private/substitution.pri.js");
 
 
@@ -60,6 +60,7 @@ app.post("/api/login", async (req, res) => {
         if (result.status === "success") {
             req.session.userId = result.idUser;
             req.session.userName = result.userName;
+            req.session.isAdmin = await isAdmin(result.idUser);
             // console.log(req.session);
         }
         res.json(result);
@@ -92,6 +93,13 @@ app.post("/api/logout", (req, res) => {
         });
     });
 });
+
+app.get("/api/admin", (req, res) => {
+    res.json({
+        isAdmin: req.session.isAdmin || false
+    });
+});
+
 
 async function resetPasswordRoute(req, res) {
     try {

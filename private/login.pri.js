@@ -23,4 +23,11 @@ async function login(body) {
     return { status: "error", message: "Invalid username or password" };
 }
 
-module.exports = { login };
+async function isAdmin(idUser) {
+    let sql = 'SELECT is_admin FROM user WHERE idUser = ?;';
+    let params = [idUser];
+    let result = await dbGet(sql, params);
+    return !!result.is_admin;
+}
+
+module.exports = { login, isAdmin };
