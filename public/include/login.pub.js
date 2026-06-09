@@ -20,9 +20,12 @@ login.addEventListener("submit", async function (e) {
 
     if (res.ok && data.status === "success") {
         result.textContent = `Du ${data.userName} er logget inn med bruker-ID: ${data.idUser}.`;
+        login.reset();
     } else {
         result.textContent = "Login feilet. Prøv igjen.";
     }
 
-    checkSession();
+    if (typeof window.checkSession === "function") {
+        window.checkSession();
+    }
 });

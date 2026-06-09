@@ -78,3 +78,20 @@ button:disabled {
 .session a:hover {
     text-decoration: underline;
 }
+
+.users-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+    text-align: left;
+}
+
+.users-table th,
+.users-table td {
+    border-bottom: 1px solid #d9e2ec;
+    padding: 10px 8px;
+}
+
+.users-table th {
+    color: #52606d;
+}
