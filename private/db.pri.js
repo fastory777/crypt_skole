@@ -10,10 +10,16 @@ db.serialize(() => {
         CREATE TABLE IF NOT EXISTS user (
                                             idUser INTEGER PRIMARY KEY AUTOINCREMENT,
                                             userName VARCHAR(45) NOT NULL UNIQUE,
-            password VARCHAR(45) NOT NULL
+            password VARCHAR(45) NOT NULL,
+            is_admin TINYINT DEFAULT 0
             );
     `);
 
+    db.run("ALTER TABLE user ADD COLUMN is_admin TINYINT DEFAULT 0;", (err) => {
+        if (err && !err.message.includes("duplicate column name")) {
+            console.error(err.message);
+        }
+    });
 });
 function run(sql, params = []) {
     return new Promise((resolve, reject) => {

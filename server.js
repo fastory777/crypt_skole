@@ -22,8 +22,10 @@ require("./private/db.pri.js");
 
 const { block } = require("./private/block.pri");
 const { register, reset } = require("./private/register.pri.js");
+const { logout } = require("./private/logout.pri.js");
 const { login, isAdmin } = require("./private/login.pri.js");
 const { substitution } = require("./private/substitution.pri.js");
+const { userList } = require("./private/users.pri.js");
 
 
 app.post("/api/block", (req, res) => {
@@ -78,26 +80,41 @@ app.get("/api/session", (req, res) => {
     });
 });
 
-app.post("/api/logout", (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
-            res.status(500).json({ status: "error", message: err.message });
+app.post("/api/logout", async (req, res) => {
+    try {
+        const result = await logout(req);
+        res.clearCookie(sessionCookieName, { path: sessionCookieOptions.path });
+        res.json(result);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ status: "error", message: err.message });
+    }
+});
+
+app.get("/api/admin", async (req, res) => {
+    if (!req.session.userId) {
+        res.json({ isAdmin: false });
+        return;
+    }
+
+    const admin = await isAdmin(req.session.userId);
+    req.session.isAdmin = admin;
+    res.json({ isAdmin: admin });
+});
+
+app.get("/api/users", async (req, res) => {
+    try {
+        if (!req.session.userId || !(await isAdmin(req.session.userId))) {
+            res.status(403).json({ status: "error", message: "Admins only" });
             return;
         }
 
-        res.clearCookie(sessionCookieName, { path: sessionCookieOptions.path });
-        res.json({
-            status: "success",
-            message: "Logged out",
-            redirectTo: "/index.html"
-        });
-    });
-});
-
-app.get("/api/admin", (req, res) => {
-    res.json({
-        isAdmin: req.session.isAdmin || false
-    });
+        const result = await userList();
+        res.json(result);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ status: "error", message: err.message });
+    }
 });
 
 

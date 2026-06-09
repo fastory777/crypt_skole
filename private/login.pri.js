@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 
 async function login(body) {
     const { userName, password } = body || {};
-    let sql = 'SELECT * FROM user WHERE username = ?;';
+    let sql = 'SELECT * FROM user WHERE userName = ?;';
     let params = [userName];
     let result = await dbGet(sql, params);
     if (!result) {
@@ -27,7 +27,7 @@ async function isAdmin(idUser) {
     let sql = 'SELECT is_admin FROM user WHERE idUser = ?;';
     let params = [idUser];
     let result = await dbGet(sql, params);
-    return !!result.is_admin;
+    return !!result?.is_admin;
 }
 
 module.exports = { login, isAdmin };
